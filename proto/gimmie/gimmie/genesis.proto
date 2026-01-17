@@ -1,0 +1,17 @@
+syntax = "proto3";
+package gimmie.gimmie;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+import "gimmie/gimmie/params.proto";
+
+option go_package = "gimmie/x/gimmie/types";
+
+// GenesisState defines the gimmie module's genesis state.
+message GenesisState {
+  // params defines all the parameters of the module.
+  Params params = 1 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
+}

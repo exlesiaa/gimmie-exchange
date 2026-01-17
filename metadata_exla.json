@@ -1,0 +1,19 @@
+{
+  "description": "EXLA is the premium utility token of the GIMMIE Network.",
+  "denom_units": [
+    {
+      "denom": "uexla",
+      "exponent": 0,
+      "aliases": ["microexla"]
+    },
+    {
+      "denom": "EXLA",
+      "exponent": 6,
+      "aliases": ["exla"]
+    }
+  ],
+  "base": "uexla",
+  "display": "EXLA",
+  "name": "EXLA Token",
+  "symbol": "EXLA"
+}

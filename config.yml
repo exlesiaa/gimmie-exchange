@@ -1,0 +1,12 @@
+version: 1
+accounts:
+  - name: founder
+    coins: ["1000000000ugim"]
+  - name: exlesiaa
+    coins: ["1000000000ugim"]
+validator:
+  name: founder
+  staked: ["1000000000ugim"]
+build:
+  main: cmd/gimmied
+
