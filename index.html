@@ -3,100 +3,123 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GIMMIE | Private Exchange</title>
+    <title>GIMMIE | Protocol Layer-1 Exchange</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap" rel="stylesheet">
     <style>
-        body { background: #020617; color: #ffffff; font-family: 'Plus Jakarta Sans', sans-serif; min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 0; overflow-x: hidden; }
-        .bg-glow { position: fixed; width: 500px; height: 500px; background: radial-gradient(circle, rgba(0, 242, 254, 0.08) 0%, transparent 70%); z-index: -1; top: 50%; left: 50%; transform: translate(-50%, -50%); }
-        .glass-ui { background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px); border-radius: 32px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); }
-        .token-logo { width: 100px; height: 100px; margin: 0 auto 15px; border-radius: 50%; border: 1px solid rgba(34, 211, 238, 0.3); box-shadow: 0 0 30px rgba(34, 211, 238, 0.2); object-fit: cover; }
-        .input-group { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); }
-        .btn-main { background: #ffffff; color: #000000; font-weight: 800; transition: 0.4s; }
-        .btn-main:disabled { background: #1e293b; color: #475569; opacity: 0.5; cursor: not-allowed; }
-        .spinner { border: 3px solid rgba(0,0,0,0.1); border-top: 3px solid #000; border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; display: inline-block; }
+        body { background: #020617; color: #ffffff; font-family: 'Plus Jakarta Sans', sans-serif; min-height: 100vh; display: flex; align-items: center; justify-content: center; margin: 0; }
+        .glass-card { background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(34, 211, 238, 0.1); backdrop-filter: blur(20px); border-radius: 32px; }
+        .glow-cyan { box-shadow: 0 0 40px rgba(34, 211, 238, 0.15); }
+        .spinner { border: 3px solid rgba(34, 211, 238, 0.1); border-top: 3px solid #22d3ee; border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body class="p-6">
-    <div class="bg-glow"></div>
-    <div class="w-full max-w-[400px]">
+    <div class="w-full max-w-[420px]">
         <div class="text-center mb-8">
-            <img src="https://i.postimg.cc/YCRv5zVg/quality-restoration-20260117171612582.jpg" alt="Logo" class="token-logo">
-            <h1 class="text-3xl font-[800] tracking-tighter">GIMMIE<span class="text-cyan-400">.</span></h1>
-            <p class="text-[9px] text-slate-500 uppercase tracking-[0.4em] mt-2 font-bold">Decentralized Protocol Layer-1</p>
+            <img src="https://i.postimg.cc/YCRv5zVg/quality-restoration-20260117171612582.jpg" alt="Gimmie Logo" class="w-24 h-24 mx-auto rounded-full border border-cyan-500/30 mb-4 shadow-[0_0_30px_rgba(34,211,238,0.2)]">
+            <h1 class="text-4xl font-[800] tracking-tighter italic">GIMMIE<span class="text-cyan-400">.</span></h1>
+            <div class="flex items-center justify-center gap-2 mt-2">
+                <span class="text-[10px] bg-cyan-500/10 text-cyan-400 px-3 py-1 rounded-full font-bold tracking-widest uppercase border border-cyan-500/20">Layer-1 Protocol Active</span>
+            </div>
         </div>
 
-        <div class="glass-ui p-7">
-            <div class="flex justify-between items-center mb-6">
+        <div class="glass-card p-8 glow-cyan">
+            <div class="flex justify-between items-center mb-8">
                 <div class="flex items-center gap-2">
-                    <div id="dot" class="w-1.5 h-1.5 rounded-full bg-red-500"></div>
-                    <span id="statusText" class="text-[9px] font-extrabold text-slate-500 uppercase tracking-widest">Disconnected</span>
+                    <div id="status-led" class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
+                    <span id="status-text" class="text-[10px] font-bold text-slate-500 uppercase tracking-tighter">Node Offline</span>
                 </div>
-                <button onclick="connectWallet()" id="connBtn" class="text-[9px] bg-white/5 border border-white/10 px-4 py-2 rounded-full font-bold hover:bg-white/10 transition-all">CONNECT WALLET</button>
+                <button onclick="connectProtocol()" id="connect-btn" class="text-[10px] font-extrabold bg-white text-black px-5 py-2 rounded-xl hover:bg-cyan-400 transition-all uppercase">Connect Wallet</button>
             </div>
 
-            <div class="space-y-2">
-                <div class="input-group p-4 rounded-2xl">
-                    <label class="text-[9px] text-slate-500 font-bold uppercase mb-2 block">Bayar (USDT)</label>
-                    <input type="number" id="usdt" oninput="rev()" placeholder="0.00" class="bg-transparent text-2xl w-full outline-none font-bold">
+            <div class="space-y-4">
+                <div class="bg-black/40 p-5 rounded-2xl border border-white/5">
+                    <p class="text-[10px] font-bold text-slate-500 mb-2 uppercase">Pay USDT</p>
+                    <input type="number" id="usdt-input" oninput="calculateGim()" placeholder="0.00" class="bg-transparent text-3xl font-bold w-full outline-none">
                 </div>
-                <div class="input-group p-4 rounded-2xl border-l-2 border-cyan-500">
-                    <label class="text-[9px] text-cyan-500 font-bold uppercase mb-2 block">Terima (GIM)</label>
-                    <input type="text" id="gim" placeholder="0.00" class="bg-transparent text-2xl w-full outline-none font-bold text-cyan-400" readonly>
+                
+                <div class="flex justify-center -my-4 relative z-10">
+                    <div class="bg-slate-900 p-2 rounded-full border border-white/10 shadow-xl">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 14l-7 7m0 0l-7-7m7 7V3" /></svg>
+                    </div>
+                </div>
+
+                <div class="bg-black/40 p-5 rounded-2xl border border-cyan-500/20">
+                    <p class="text-[10px] font-bold text-cyan-500 mb-2 uppercase italic">Receive GIM (L1 Asset)</p>
+                    <input type="text" id="gim-output" placeholder="0.00" class="bg-transparent text-3xl font-bold w-full outline-none text-cyan-400" readonly>
                 </div>
             </div>
 
-            <button onclick="startSwap()" id="swapBtn" disabled class="btn-main w-full mt-6 py-4 rounded-2xl text-[11px] uppercase tracking-widest flex items-center justify-center gap-3">
-                <span id="btnText">Hubungkan Wallet Dahulu</span>
+            <button onclick="processSwap()" id="swap-btn" disabled class="w-full mt-8 py-5 rounded-2xl bg-slate-800 text-slate-500 font-extrabold text-[12px] tracking-[0.2em] uppercase transition-all flex items-center justify-center gap-3">
+                <span id="btn-label">Verify Protocol Node</span>
             </button>
+
+            <div class="mt-6 pt-6 border-t border-white/5 grid grid-cols-2 gap-4">
+                <div class="text-center">
+                    <p class="text-[8px] text-slate-500 font-bold uppercase">Protocol Tax</p>
+                    <p class="text-[10px] text-white font-bold">1% (Applied)</p>
+                </div>
+                <div class="text-center">
+                    <p class="text-[8px] text-slate-500 font-bold uppercase">L1 Security</p>
+                    <p class="text-[10px] text-green-400 font-bold">256-bit Encrypted</p>
+                </div>
+            </div>
         </div>
-        
-        <p class="mt-10 text-center text-slate-700 text-[8px] font-bold tracking-[0.4em] uppercase">Secured by Gimmie Node</p>
     </div>
 
     <script>
-        let isConnected = false;
+        let walletConnected = false;
 
-        function rev() {
-            const val = document.getElementById('usdt').value;
-            document.getElementById('gim').value = val ? (val * 10).toLocaleString() : '';
+        function calculateGim() {
+            const usdt = document.getElementById('usdt-input').value;
+            // Simulasi Rate 1 USDT = 10 GIM
+            if(usdt) {
+                const result = usdt * 10;
+                document.getElementById('gim-output').value = result.toLocaleString();
+            } else {
+                document.getElementById('gim-output').value = '';
+            }
         }
 
-        function connectWallet() {
-            const btn = document.getElementById('connBtn');
-            const dot = document.getElementById('dot');
-            const status = document.getElementById('statusText');
-            const swapBtn = document.getElementById('swapBtn');
+        function connectProtocol() {
+            const btn = document.getElementById('connect-btn');
+            const led = document.getElementById('status-led');
+            const status = document.getElementById('status-text');
+            const swapBtn = document.getElementById('swap-btn');
 
-            btn.innerHTML = "CONNECTING...";
+            btn.innerText = "SINKRONISASI...";
+            
             setTimeout(() => {
-                isConnected = true;
-                btn.innerHTML = "0x71C...4f2E";
-                dot.classList.replace('bg-red-500', 'bg-cyan-500');
-                status.innerText = "Mainnet Connected";
-                status.classList.replace('text-slate-500', 'text-cyan-500');
+                walletConnected = true;
+                btn.innerText = "L1-DE72...F19";
+                btn.className = "text-[10px] font-extrabold bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 px-5 py-2 rounded-xl";
+                led.classList.replace('bg-red-500', 'bg-green-400');
+                status.innerText = "GIMMIE Node Connected";
+                status.className = "text-[10px] font-bold text-green-400 uppercase tracking-tighter";
+                
                 swapBtn.disabled = false;
-                document.getElementById('btnText').innerText = "Konfirmasi Swap";
-            }, 1200);
+                swapBtn.className = "w-full mt-8 py-5 rounded-2xl bg-white text-black font-extrabold text-[12px] tracking-[0.2em] uppercase hover:bg-cyan-400 transition-all cursor-pointer";
+                document.getElementById('btn-label').innerText = "Konfirmasi L1 Swap";
+            }, 1500);
         }
 
-        function startSwap() {
-            const amount = document.getElementById('usdt').value;
-            if(!amount || amount <= 0) return alert("Masukkan jumlah USDT!");
+        function processSwap() {
+            const val = document.getElementById('usdt-input').value;
+            if(!val) return alert("Tentukan jumlah USDT!");
+
+            const btn = document.getElementById('swap-btn');
+            const label = document.getElementById('btn-label');
             
-            const btn = document.getElementById('swapBtn');
-            const originalText = btn.innerHTML;
-            
+            label.innerHTML = '<div class="spinner"></div>';
             btn.disabled = true;
-            btn.innerHTML = '<div class="spinner"></div> <span>Processing...</span>';
 
             setTimeout(() => {
-                alert("TRANSAKSI BERHASIL!\n\nProtokol telah mengirim " + (amount * 10) + " GIM ke wallet Anda.");
+                alert("PROTOCOL TRANSACTION SUCCESS!\n\nL1 Node: Verified\nAsset: GIM Token\nTax (1%): Burnt\n\nCek wallet Anda secara berkala.");
+                label.innerText = "Konfirmasi L1 Swap";
                 btn.disabled = false;
-                btn.innerHTML = originalText;
-                document.getElementById('usdt').value = '';
-                document.getElementById('gim').value = '';
+                document.getElementById('usdt-input').value = '';
+                document.getElementById('gim-output').value = '';
             }, 3000);
         }
     </script>
